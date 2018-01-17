@@ -1,0 +1,1 @@
+# hapi-transform-table [![Build Status](https://travis-ci.org/firstandthird/hapi-transform-table.svg?branch=master)](https://travis-ci.org/firstandthird/hapi-transform-table) [![Coverage Status](https://coveralls.io/repos/github/firstandthird/hapi-transform-table/badge.svg?branch=master)](https://coveralls.io/github/firstandthird/hapi-transform-table?branch=master)
