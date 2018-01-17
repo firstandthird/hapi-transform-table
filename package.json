@@ -1,0 +1,28 @@
+{
+  "name": "hapi-transform-table",
+  "version": "0.0.1",
+  "description": "hapi plugin for routes that need to return json as HTML tables ",
+  "main": "index.js",
+  "scripts": {
+    "test": "tap tests/test.*.js",
+    "lint": "eslint **/*.js"
+  },
+  "keywords": [
+    "hapi",
+    "csv"
+  ],
+  "eslintConfig": {
+    "extends": "firstandthird"
+  },
+  "author": "First+Third",
+  "license": "MIT",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "eslint": "^4.15.0",
+    "eslint-config-firstandthird": "^4.3.0",
+    "eslint-plugin-import": "^2.8.0",
+    "hapi": "^17.2.0",
+    "tap": "^11.0.1"
+  }
+}
