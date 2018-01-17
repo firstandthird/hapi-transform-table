@@ -4,7 +4,7 @@
   "description": "hapi plugin for routes that need to return json as HTML tables ",
   "main": "index.js",
   "scripts": {
-    "test": "tap tests/test.*.js",
+    "test": "eslint . && tap tests/test.*.js",
     "lint": "eslint **/*.js"
   },
   "keywords": [
