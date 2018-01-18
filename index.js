@@ -3,7 +3,7 @@ const os = require('os');
 
 const register = (server, pluginOptions) => {
   const tableToHtml = (table, options) => {
-    const header = `<th><td>${table[0].join('</td><td>')}</td></th>${os.EOL}`;
+    const header = `<tr><th>${table[0].join('</th><th>')}</th></tr>${os.EOL}`;
     const rows = table.slice(1).reduce((tableString, n) => `${tableString}<tr><td>${n.join('</td><td>')}</td></tr>${os.EOL}`, '');
     return `<table>${os.EOL}${header}${rows}</table>`;
   };
