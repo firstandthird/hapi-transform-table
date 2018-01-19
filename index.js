@@ -23,11 +23,8 @@ const register = (server, pluginOptions) => {
     if (request.headers.accept === 'text/html') {
       const routeOptions = request.route.settings.plugins['hapi-transform-table'] || {};
       const options = Object.assign({}, pluginOptions, routeOptions);
-      let table = jsonToTable(response.source, options);
-      if (typeof options.mapData === 'function') {
-        table = table.map(options.mapData);
-      }
-      return h.response(tableToHtml(table));
+      const source = typeof options.mapData === 'function' ? response.source.map(options.mapData) : response.source;
+      return h.response(tableToHtml(jsonToTable(source, options)));
     }
     return h.continue;
   });

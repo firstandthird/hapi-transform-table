@@ -139,7 +139,12 @@ tap.test('will pass mapping functions', async(t) => {
       plugins: {
         'hapi-transform-table': {
           includeCollectionLength: true,
-          mapData: (tableEntry) => tableEntry.reverse()
+          mapData: (tableEntry) => {
+            return {
+              Transport: tableEntry.car,
+              Price: `$${tableEntry.price.toFixed(2)}`
+            };
+          }
         }
       }
     },
