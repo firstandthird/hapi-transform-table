@@ -139,7 +139,7 @@ tap.test('will pass mapping functions', async(t) => {
       plugins: {
         'hapi-transform-table': {
           includeCollectionLength: true,
-          mapData: (tableEntry, options) => tableEntry[1]
+          mapData: (tableEntry) => tableEntry.reverse()
         }
       }
     },
@@ -168,7 +168,7 @@ tap.test('will pass mapping functions', async(t) => {
     url: '/path1.html'
   });
   t.equal(tableResponse.statusCode, 200, 'returns HTTP OK');
-  t.deepEqual(tableResponse.result, ['price', 40000, 35000, 60000]);
+  t.equal(tableResponse.result, fs.readFileSync(path.join(__dirname, 'output3.html'), 'utf-8'), 'produces correct HTML output');
   await server.stop();
   t.end();
 });
