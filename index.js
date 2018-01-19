@@ -3,9 +3,10 @@ const os = require('os');
 
 const register = (server, pluginOptions) => {
   const tableToHtml = (table, options) => {
+    const tableAttributes = options && options.tableAttributes ? ` ${options.tableAttributes}` : '';
     const header = `<tr><th>${table[0].join('</th><th>')}</th></tr>${os.EOL}`;
     const rows = table.slice(1).reduce((tableString, n) => `${tableString}<tr><td>${n.join('</td><td>')}</td></tr>${os.EOL}`, '');
-    return `<table>${os.EOL}${header}${rows}</table>`;
+    return `<table${tableAttributes}>${os.EOL}${header}${rows}</table>`;
   };
 
   server.ext('onRequest', (request, h) => {
@@ -23,7 +24,7 @@ const register = (server, pluginOptions) => {
     if (request.headers.accept === 'text/html') {
       const routeOptions = request.route.settings.plugins['hapi-transform-table'] || {};
       const options = Object.assign({}, pluginOptions, routeOptions);
-      return h.response(tableToHtml(jsonToTable(response.source, options)));
+      return h.response(tableToHtml(jsonToTable(response.source, options), options));
     }
     return h.continue;
   });
