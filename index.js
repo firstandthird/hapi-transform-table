@@ -21,6 +21,9 @@ const register = (server, pluginOptions) => {
     if (response.isBoom) {
       return h.continue;
     }
+    if (response.statusCode !== 200) {
+      return h.continue;
+    }
     if (request.headers.accept === 'text/html') {
       const routeOptions = request.route.settings.plugins['hapi-transform-table'] || {};
       const options = Object.assign({}, pluginOptions, routeOptions);
