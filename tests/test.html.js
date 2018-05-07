@@ -218,3 +218,46 @@ tap.test('be able to pass in tableAttributes', async(t) => {
   await server.stop();
   t.end();
 });
+
+tap.test('be able to pass in css and js links', async(t) => {
+  const server = await new Hapi.Server({ port: 8080 });
+  server.route({
+    method: 'get',
+    path: '/path1',
+    config: {
+      plugins: {
+        'hapi-transform-table': {
+          css: ['css.js', 'css2.js'],
+          scripts: ['script.js', 'script2.js'],
+        }
+      }
+    },
+    handler(request, h) {
+      return [
+        {
+          car: 'Audi',
+          price: 40000,
+          colors: ['blue', 'black']
+        }, {
+          car: 'BMW',
+          price: 35000,
+          colors: ['magenta', 'muave', 'cyan']
+        }, {
+          car: 'Porsche',
+          price: 60000,
+          colors: ['lime']
+        }
+      ];
+    }
+  });
+  await server.register({ plugin, options: { excludeSubArrays: true } });
+  await server.start();
+  const tableResponse = await server.inject({
+    method: 'get',
+    url: '/path1.html'
+  });
+  t.equal(tableResponse.statusCode, 200, 'returns HTTP OK');
+  t.equal(tableResponse.result, fs.readFileSync(path.join(__dirname, 'output5.html'), 'utf-8'), 'produces correct HTML output');
+  await server.stop();
+  t.end();
+});
