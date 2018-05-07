@@ -8,7 +8,7 @@ const register = (server, pluginOptions) => {
     const rows = table.slice(1).reduce((tableString, n) => `${tableString}<tr><td>${n.join('</td><td>')}</td></tr>${os.EOL}`, '');
     const css = options.css.map(link => `<link rel="stylesheet" type="text/css" href=${link}>"`).join(os.EOL);
     const scripts = options.scripts.map(link => `<script type="text/javascript" src="${link}"></script>`).join(os.EOL);
-    return `${css}${os.EOL}${scripts}${os.EOL}<table${tableAttributes}>${os.EOL}${header}${rows}</table>`;
+    return `${css}${css ? os.EOL : ''}${scripts}${scripts ? os.EOL : ''}<table${tableAttributes}>${os.EOL}${header}${rows}</table>`;
   };
 
   server.ext('onRequest', (request, h) => {

@@ -227,7 +227,7 @@ tap.test('be able to pass in css and js links', async(t) => {
     config: {
       plugins: {
         'hapi-transform-table': {
-          css: ['css.js', 'css2.js'],
+          css: ['css.css', 'css2.css'],
           scripts: ['script.js', 'script2.js'],
         }
       }
