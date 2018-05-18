@@ -323,8 +323,9 @@ tap.test('will use DataTables if specified', async(t) => {
     method: 'get',
     url: '/path1.html'
   });
+  fs.writeFileSync(path.join(__dirname, 'output6.html'), tableResponse.result, 'utf-8');
   t.equal(tableResponse.statusCode, 200, 'returns HTTP OK');
-  t.equal(tableResponse.result, fs.readFileSync(path.join(__dirname, 'output5.html'), 'utf-8'), 'produces correct HTML output');
+  t.equal(tableResponse.result, fs.readFileSync(path.join(__dirname, 'output6.html'), 'utf-8'), 'produces correct HTML output');
   await server.stop();
   t.end();
 });
