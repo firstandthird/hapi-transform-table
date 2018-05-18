@@ -32,7 +32,17 @@ const register = (server, pluginOptions) => {
       const source = typeof options.mapData === 'function' ? response.source.map(options.mapData) : response.source;
       options.css = options.css || [];
       options.scripts = options.scripts || [];
-      return h.response(tableToHtml(jsonToTable(source, options), options));
+      if (options.datatable) {
+        options.css.push('cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css');
+        options.scripts.push('cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js');
+      }
+      let tableString = tableToHtml(jsonToTable(source, options), options);
+      if (options.datatable) {
+        tableString = `${tableString}${os.EOL}$(document).ready( function () {
+            $('#myTable').DataTable();
+        } );`;
+      }
+      return h.response(tableString);
     }
     return h.continue;
   });
