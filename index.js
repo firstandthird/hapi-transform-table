@@ -41,7 +41,9 @@ const register = (server, pluginOptions) => {
       let tableString = tableToHtml(jsonToTable(source, options), options);
       if (options.datatable) {
         tableString = `${tableString}${os.EOL}<script>$(document).ready( function () {
-      $('#table').DataTable();
+      $('#table').DataTable({
+        "pageLength": 100
+      });
     });</script>`;
       }
       return h.response(tableString);
