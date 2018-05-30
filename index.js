@@ -42,7 +42,8 @@ const register = (server, pluginOptions) => {
       if (options.datatable) {
         tableString = `${tableString}${os.EOL}<script>$(document).ready( function () {
       $('#table').DataTable({
-        "pageLength": 100
+        "pageLength": 100,
+        "order": []
       });
     });</script>`;
       }
