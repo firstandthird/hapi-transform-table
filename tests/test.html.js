@@ -328,3 +328,30 @@ tap.test('will use DataTables if specified', async(t) => {
   await server.stop();
   t.end();
 });
+
+tap.test('will forward query params to the underlying route', async(t) => {
+  const server = await new Hapi.Server({ port: 8080 });
+  server.route({
+    method: 'get',
+    path: '/path1',
+    config: {
+      plugins: {
+        'hapi-transform-table': {
+        }
+      }
+    },
+    handler(request, h) {
+      t.equal(request.query.test, '1', 'query param forwarded');
+      return [];
+    }
+  });
+  await server.register(plugin, {});
+  await server.start();
+  const tableResponse = await server.inject({
+    method: 'get',
+    url: '/path1.html?test=1'
+  });
+  t.equal(tableResponse.statusCode, 200, 'returns HTTP OK');
+  await server.stop();
+  t.end();
+});

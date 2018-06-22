@@ -12,10 +12,12 @@ const register = (server, pluginOptions) => {
   };
 
   server.ext('onRequest', (request, h) => {
+    const query = request.query;
     if (request.path.endsWith('.html')) {
       request.headers.accept = 'text/html';
       request.setUrl(request.path.replace('.html', ''));
     }
+    request.query = query;
     return h.continue;
   });
   server.ext('onPreResponse', (request, h) => {
