@@ -1,6 +1,6 @@
 {
   "name": "hapi-transform-table",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "hapi plugin for routes that need to return json as HTML tables ",
   "main": "index.js",
   "scripts": {
