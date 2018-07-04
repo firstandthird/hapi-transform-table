@@ -17,7 +17,8 @@
   "author": "First+Third",
   "license": "MIT",
   "dependencies": {
-    "json-to-table": "^4.0.0"
+    "json-to-table": "^4.0.0",
+    "qs": "^6.5.2"
   },
   "devDependencies": {
     "eslint": "^4.15.0",
