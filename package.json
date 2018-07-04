@@ -25,6 +25,7 @@
     "eslint-config-firstandthird": "^4.3.0",
     "eslint-plugin-import": "^2.8.0",
     "hapi": "^17.2.0",
+    "hapi-password": "^5.1.0",
     "tap": "^11.0.1"
   }
 }
