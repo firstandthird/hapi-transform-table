@@ -13,14 +13,16 @@ const register = (server, pluginOptions) => {
   };
 
   server.ext('onRequest', (request, h) => {
-    const query = request.query;
-    request.headers.accept = 'text/html';
-    let newUrl = request.path.replace('.html', '');
-    if (Object.keys(query).length) {
-      newUrl = `${newUrl}?${qs.stringify(query)}`;
+    if (request.path.endsWith('.html')) {
+      const query = request.query;
+      request.headers.accept = 'text/html';
+      let newUrl = request.path.replace('.html', '');
+      if (Object.keys(query).length) {
+        newUrl = `${newUrl}?${qs.stringify(query)}`;
+      }
+      request.setUrl(newUrl);
+      request.query = query;
     }
-    request.setUrl(newUrl);
-    request.query = query;
     return h.continue;
   });
   server.ext('onPreResponse', (request, h) => {
