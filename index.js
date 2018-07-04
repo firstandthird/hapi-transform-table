@@ -1,5 +1,6 @@
 const jsonToTable = require('json-to-table');
 const os = require('os');
+const qs = require('qs');
 
 const register = (server, pluginOptions) => {
   const tableToHtml = (table, options) => {
@@ -12,12 +13,14 @@ const register = (server, pluginOptions) => {
   };
 
   server.ext('onRequest', (request, h) => {
-    if (request.path.endsWith('.html')) {
-      const query = request.query;
-      request.headers.accept = 'text/html';
-      request.setUrl(request.path.replace('.html', ''));
-      request.query = query;
+    const query = request.query;
+    request.headers.accept = 'text/html';
+    let newUrl = request.path.replace('.html', '');
+    if (Object.keys(query).length) {
+      newUrl = `${newUrl}?${qs.stringify(query)}`;
     }
+    request.setUrl(newUrl);
+    request.query = query;
     return h.continue;
   });
   server.ext('onPreResponse', (request, h) => {
