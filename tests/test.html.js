@@ -356,3 +356,32 @@ tap.test('will forward query params to the underlying route', async(t) => {
   await server.stop();
   t.end();
 });
+
+tap.test('auth schemes that do redirects will preserve the original .html route', async(t) => {
+  const server = await new Hapi.Server({ port: 8080 });
+  await server.register(plugin, {});
+  await server.register({
+    plugin: require('hapi-password'),
+    options: {
+      salt: 'aSalt',
+      password: 'password',
+      cookieName: 'demo-login'
+    }
+  });
+  server.route({
+    method: 'GET',
+    path: '/success',
+    config: {
+      plugins: {
+        'hapi-transform-table': {}
+      },
+      handler: (request, h) => 'success!'
+    }
+  });
+  await server.start();
+  const redirectResponse = await server.inject({ url: '/success.html' });
+  t.equal(redirectResponse.statusCode, 302);
+  t.equal(redirectResponse.headers.location, '/login?next=/success.html');
+  await server.stop();
+  t.end();
+});
