@@ -1,5 +1,6 @@
 const jsonToTable = require('json-to-table');
 const os = require('os');
+const qs = require('querystring');
 
 const register = (server, pluginOptions) => {
   const tableToHtml = (table, options) => {
@@ -15,17 +16,28 @@ const register = (server, pluginOptions) => {
     if (request.path.endsWith('.html')) {
       const query = request.query;
       request.headers.accept = 'text/html';
-      request.setUrl(request.path.replace('.html', ''));
+      let newUrl = request.path.replace('.html', '');
+      // save the original path info:
+      request.app.transformTable = {
+        originalPath: newUrl
+      };
+      if (Object.keys(query).length) {
+        newUrl = `${newUrl}?${qs.stringify(query)}`;
+      }
+      request.setUrl(newUrl);
       request.query = query;
     }
     return h.continue;
   });
   server.ext('onPreResponse', (request, h) => {
     const response = request.response;
-    if (response.isBoom) {
-      return h.continue;
-    }
-    if (response.statusCode !== 200) {
+    if (response.isBoom || response.statusCode !== 200) {
+      // if this was originally a .html request and it got redirected,
+      // add back the .html before returning it
+      if (request.app.transformTable && [301, 302].includes(response.statusCode)) {
+        const originalPath = request.app.transformTable.originalPath;
+        response.headers.location = response.headers.location.replace(originalPath, `${originalPath}.html`);
+      }
       return h.continue;
     }
     if (request.headers.accept === 'text/html') {
