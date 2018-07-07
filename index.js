@@ -43,7 +43,11 @@ const register = (server, pluginOptions) => {
     if (request.headers.accept === 'text/html') {
       const routeOptions = request.route.settings.plugins['hapi-transform-table'] || {};
       const options = Object.assign({}, pluginOptions, routeOptions);
-      const source = typeof options.mapData === 'function' ? response.source.map(options.mapData) : response.source;
+      let source = typeof options.mapData === 'function' ? response.source.map(options.mapData) : response.source;
+      // if it is a single object then convert it for more convenient display:
+      if (typeof source === 'object' && !Array.isArray(source)) {
+        source = Object.keys(source).map(key => ({ Name: key, Value: source[key] }));
+      }
       options.css = options.css || [];
       options.scripts = options.scripts || [];
       if (options.datatable) {
