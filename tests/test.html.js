@@ -88,6 +88,32 @@ tap.test('can configure a route to return html table instead of json', async(t) 
   t.end();
 });
 
+tap.test('can render configure a route to return html table instead of json', async(t) => {
+  const server = await new Hapi.Server({ port: 8080 });
+  server.route({
+    method: 'get',
+    path: '/normal',
+    handler(request, h) {
+      return {
+        car: 'Audi',
+        price: 40000,
+        color: 'blue'
+      };
+    }
+  });
+  await server.register(plugin, {});
+  await server.start();
+  const tableResponse = await server.inject({
+    method: 'get',
+    url: '/normal.html'
+  });
+  t.equal(tableResponse.statusCode, 200, 'returns HTTP OK');
+  t.equal(typeof tableResponse.result, 'string', 'returns a string value');
+  t.equal(tableResponse.result, fs.readFileSync(path.join(__dirname, 'outputObject.html'), 'utf-8'), 'produces correct HTML output');
+  await server.stop();
+  t.end();
+});
+
 tap.test('will pass config options to json-to-table', async(t) => {
   const server = await new Hapi.Server({ port: 8080 });
   server.route({
