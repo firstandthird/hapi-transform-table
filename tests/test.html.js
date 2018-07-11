@@ -127,7 +127,8 @@ tap.test('can render a nested  object as html table', async(t) => {
           color: {
             r: 255,
             g: 12,
-            b: 55
+            b: undefined,
+            a: null
           }
         }
       };
