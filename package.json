@@ -17,6 +17,7 @@
   "author": "First+Third",
   "license": "MIT",
   "dependencies": {
+    "fmt-obj": "^2.0.0",
     "json-to-table": "^4.0.0"
   },
   "devDependencies": {

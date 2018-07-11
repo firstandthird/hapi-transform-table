@@ -1,6 +1,7 @@
 const jsonToTable = require('json-to-table');
 const os = require('os');
 const qs = require('querystring');
+const formatObj = require('fmt-obj');
 
 const register = (server, pluginOptions) => {
   const tableToHtml = (table, options) => {
@@ -46,7 +47,7 @@ const register = (server, pluginOptions) => {
       let source = typeof options.mapData === 'function' ? response.source.map(options.mapData) : response.source;
       // if it is a single object then convert it for more convenient display:
       if (typeof source === 'object' && !Array.isArray(source)) {
-        source = Object.keys(source).map(key => ({ Name: key, Value: source[key] }));
+        source = Object.keys(source).map(key => ({ Name: key, Value: typeof source[key] === 'object' ? `<pre>${formatObj(source[key])}</pre>` : source[key] }));
       }
       options.css = options.css || [];
       options.scripts = options.scripts || [];
