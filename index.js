@@ -1,7 +1,7 @@
 const jsonToTable = require('json-to-table');
 const os = require('os');
 const qs = require('querystring');
-const formatObj = require('fmt-obj');
+const formatObj = require('pretty-format');
 
 const register = (server, pluginOptions) => {
   const tableToHtml = (table, options) => {
