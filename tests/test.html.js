@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 const Hapi = require('hapi');
 const tap = require('tap');
 const plugin = require('../index');
