@@ -8,7 +8,12 @@ const register = (server, pluginOptions) => {
     const tableAttributes = options && options.tableAttributes ? ` ${options.tableAttributes}` : '';
     const header = `<thead>${os.EOL}<tr><th>${table[0].join('</th><th>')}</th></tr>${os.EOL}</thead>${os.EOL}`;
     const rows = table.slice(1).reduce((tableString, n) => `${tableString}<tr><td>${n.join('</td><td>')}</td></tr>${os.EOL}`, '');
-    const css = options.css.map(link => `<link rel="stylesheet" type="text/css" href=${link}>`).join(os.EOL);
+    let css = options.css.map(link => `<link rel="stylesheet" type="text/css" href=${link}>`).join(os.EOL);
+    css = `<style>
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+</style>`;
     const scripts = options.scripts.map(link => `<script type="text/javascript" src="${link}"></script>`).join(os.EOL);
     return `${css}${css ? os.EOL : ''}${scripts}${scripts ? os.EOL : ''}<table${tableAttributes}>${os.EOL}${header}${os.EOL}<tbody>${rows}</tbody>${os.EOL}</table>`;
   };
@@ -55,7 +60,7 @@ const register = (server, pluginOptions) => {
         options.css.push('https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css');
         options.scripts.push('https://code.jquery.com/jquery-3.3.1.min.js');
         options.scripts.push('https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js');
-        options.tableAttributes = 'id="table"';
+        options.tableAttributes = 'id="table" class="display"';
       }
       let tableString = tableToHtml(jsonToTable(source, options), options);
       if (options.datatable) {
