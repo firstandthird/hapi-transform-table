@@ -5,7 +5,7 @@ const formatObj = require('pretty-format');
 
 const register = (server, pluginOptions) => {
   const tableToHtml = (table, options) => {
-    const tableAttributes = options && options.tableAttributes ? ` ${options.tableAttributes}` : '';
+    const tableAttributes = ` ${options.tableAttributes}`;
     const header = `<thead>${os.EOL}<tr><th>${table[0].join('</th><th>')}</th></tr>${os.EOL}</thead>${os.EOL}`;
     const rows = table.slice(1).reduce((tableString, n) => `${tableString}<tr><td>${n.join('</td><td>')}</td></tr>${os.EOL}`, '');
     let css = options.css.map(link => `<link rel="stylesheet" type="text/css" href=${link}>`).join(os.EOL);
