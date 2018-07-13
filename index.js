@@ -60,8 +60,9 @@ body {
         options.css.push('https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css');
         options.scripts.push('https://code.jquery.com/jquery-3.3.1.min.js');
         options.scripts.push('https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js');
-        options.tableAttributes = 'id="table" class="display"';
+        options.tableAttributes = 'id="table"';
       }
+      options.tableAttributes = options.tableAttributes ? `${options.tableAttributes} class="display"` : 'class="display"';
       let tableString = tableToHtml(jsonToTable(source, options), options);
       if (options.datatable) {
         tableString = `${tableString}${os.EOL}<script>$(document).ready( function () {
