@@ -1,8 +1,19 @@
+/* istanbul ignore file */
 const Hapi = require('hapi');
 const tap = require('tap');
 const plugin = require('../index');
 const path = require('path');
 const fs = require('fs');
+
+// this verifies that files match templates and updates the templates
+// if  'updateTemplate' is true, making it easier to maintain these tests
+const updateTemplate = false;
+const verify = (t, result, filename) => {
+  if (updateTemplate) {
+    fs.writeFileSync(filename, result);
+  }
+  t.equal(fs.readFileSync(filename, 'utf-8'), result);
+};
 
 tap.test('can configure a route to return html table instead of json', async(t) => {
   const server = await new Hapi.Server({ port: 8080 });
@@ -63,7 +74,7 @@ tap.test('can configure a route to return html table instead of json', async(t) 
   });
   t.equal(tableResponse.statusCode, 200, 'returns HTTP OK');
   t.equal(typeof tableResponse.result, 'string', 'returns a string value');
-  t.equal(tableResponse.result, fs.readFileSync(path.join(__dirname, 'output1.html'), 'utf-8'), 'produces correct HTML output');
+  verify(t, tableResponse.result, path.join(__dirname, 'output1.html'));
   const jsonResponse = await server.inject({
     method: 'get',
     url: '/normal'
@@ -109,7 +120,7 @@ tap.test('can render a single object as html table', async(t) => {
   });
   t.equal(tableResponse.statusCode, 200, 'returns HTTP OK');
   t.equal(typeof tableResponse.result, 'string', 'returns a string value');
-  t.equal(tableResponse.result, fs.readFileSync(path.join(__dirname, 'outputObject.html'), 'utf-8'), 'produces correct HTML output');
+  verify(t, tableResponse.result, path.join(__dirname, 'outputObject.html'));
   await server.stop();
   t.end();
 });
@@ -142,7 +153,7 @@ tap.test('can render a nested  object as html table', async(t) => {
   });
   t.equal(tableResponse.statusCode, 200, 'returns HTTP OK');
   t.equal(typeof tableResponse.result, 'string', 'returns a string value');
-  t.equal(tableResponse.result, fs.readFileSync(path.join(__dirname, 'outputFormat.html'), 'utf-8'), 'produces correct HTML output');
+  verify(t, tableResponse.result, path.join(__dirname, 'outputFormat.html'));
   await server.stop();
   t.end();
 });
@@ -184,7 +195,7 @@ tap.test('will pass config options to json-to-table', async(t) => {
     url: '/path1.html'
   });
   t.equal(tableResponse.statusCode, 200, 'returns HTTP OK');
-  t.equal(tableResponse.result, fs.readFileSync(path.join(__dirname, 'output2.html'), 'utf-8'), 'produces correct HTML output');
+  verify(t, tableResponse.result, path.join(__dirname, 'output2.html'));
   await server.stop();
   t.end();
 });
@@ -230,7 +241,7 @@ tap.test('will pass mapping functions', async(t) => {
     url: '/path1.html'
   });
   t.equal(tableResponse.statusCode, 200, 'returns HTTP OK');
-  t.equal(tableResponse.result, fs.readFileSync(path.join(__dirname, 'output3.html'), 'utf-8'), 'produces correct HTML output');
+  verify(t, tableResponse.result, path.join(__dirname, 'output3.html'));
   await server.stop();
   t.end();
 });
@@ -273,7 +284,7 @@ tap.test('be able to pass in tableAttributes', async(t) => {
     url: '/path1.html'
   });
   t.equal(tableResponse.statusCode, 200, 'returns HTTP OK');
-  t.equal(tableResponse.result, fs.readFileSync(path.join(__dirname, 'output4.html'), 'utf-8'), 'produces correct HTML output');
+  verify(t, tableResponse.result, path.join(__dirname, 'output4.html'));
   await server.stop();
   t.end();
 });
@@ -316,7 +327,7 @@ tap.test('be able to pass in css and js links', async(t) => {
     url: '/path1.html'
   });
   t.equal(tableResponse.statusCode, 200, 'returns HTTP OK');
-  t.equal(tableResponse.result, fs.readFileSync(path.join(__dirname, 'output5.html'), 'utf-8'), 'produces correct HTML output');
+  verify(t, tableResponse.result, path.join(__dirname, 'output5.html'));
   await server.stop();
   t.end();
 });
@@ -383,7 +394,7 @@ tap.test('will use DataTables if specified', async(t) => {
     url: '/path1.html'
   });
   t.equal(tableResponse.statusCode, 200, 'returns HTTP OK');
-  t.equal(tableResponse.result, fs.readFileSync(path.join(__dirname, 'output6.html'), 'utf-8'), 'produces correct HTML output');
+  verify(t, tableResponse.result, path.join(__dirname, 'output6.html'));
   await server.stop();
   t.end();
 });
