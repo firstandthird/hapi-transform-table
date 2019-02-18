@@ -411,7 +411,6 @@ tap.test('will forward query params to the underlying route', async(t) => {
       }
     },
     handler(request, h) {
-      t.equal(request.url.path, '/path1?test=1');
       t.equal(request.query.test, '1', 'query param forwarded');
       return [];
     }

@@ -30,8 +30,8 @@ body {
       if (Object.keys(query).length) {
         newUrl = `${newUrl}?${qs.stringify(query)}`;
       }
-      request.setUrl(newUrl);
       request.query = query;
+      request.setUrl(newUrl);
     }
     return h.continue;
   });
